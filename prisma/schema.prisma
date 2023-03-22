@@ -5,6 +5,9 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator dbml {
+  provider = "prisma-dbml-generator"
+}
 // datasource db {
 //   provider = "postgresql"
 //   url      = env("DATABASE_URL")
@@ -21,4 +24,59 @@ model User {
   email      String   @unique
   name       String
   password   String
+  tickets    Ticket[]
+}
+
+model Station {
+  id         Int        @id @default(autoincrement())
+  created_at DateTime   @default(now())
+  name       String     @unique
+  arrivals   Schedule[] @relation("arrival_station")
+  depatures  Schedule[] @relation("depature_station")
+}
+
+model Schedule {
+  id                  Int      @id @default(autoincrement())
+  created_at          DateTime @default(now())
+  seats               Seat[]
+  is_open             Boolean
+  depature_station_id Int
+  depature_station    Station  @relation(name: "depature_station", fields: [depature_station_id], references: [id])
+  arrival_station_id  Int
+  arrival_station     Station  @relation(name: "arrival_station", fields: [arrival_station_id], references: [id])
+  departure_date      String
+  arrival_date        String?
+  depature_time       String
+  arrival_time        String
+}
+
+model Classification {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  name       String   @unique
+  seats      Seat[]
+}
+
+model Seat {
+  id                Int            @id @default(autoincrement())
+  created_at        DateTime       @default(now())
+  name              String
+  price             Decimal
+  classification    Classification @relation(fields: [classification_id], references: [id])
+  classification_id Int
+  schedule          Schedule       @relation(fields: [schedule_id], references: [id])
+  schedule_id       Int
+  is_booked         Boolean
+  ticket            Ticket?
+}
+
+model Ticket {
+  id             Int      @id @default(autoincrement())
+  created_at     DateTime @default(now())
+  transaction_id String
+  reference_id   String
+  user           User     @relation(fields: [user_id], references: [id])
+  user_id        Int
+  seat           Seat     @relation(fields: [seat_id], references: [id])
+  seat_id        Int      @unique
 }

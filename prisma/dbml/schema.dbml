@@ -1,0 +1,78 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table User {
+  id Int [pk, increment]
+  created_at DateTime [default: `now()`, not null]
+  email String [unique, not null]
+  name String [not null]
+  password String [not null]
+  tickets Ticket [not null]
+}
+
+Table Station {
+  id Int [pk, increment]
+  created_at DateTime [default: `now()`, not null]
+  name String [unique, not null]
+  arrivals Schedule [not null]
+  depatures Schedule [not null]
+}
+
+Table Schedule {
+  id Int [pk, increment]
+  created_at DateTime [default: `now()`, not null]
+  seats Seat [not null]
+  is_open Boolean [not null]
+  depature_station_id Int [not null]
+  depature_station Station [not null]
+  arrival_station_id Int [not null]
+  arrival_station Station [not null]
+  departure_date String [not null]
+  arrival_date String
+  depature_time String [not null]
+  arrival_time String [not null]
+}
+
+Table Classification {
+  id Int [pk, increment]
+  created_at DateTime [default: `now()`, not null]
+  name String [unique, not null]
+  seats Seat [not null]
+}
+
+Table Seat {
+  id Int [pk, increment]
+  created_at DateTime [default: `now()`, not null]
+  name String [not null]
+  price Decimal [not null]
+  classification Classification [not null]
+  classification_id Int [not null]
+  schedule Schedule [not null]
+  schedule_id Int [not null]
+  is_booked Boolean [not null]
+  ticket Ticket
+}
+
+Table Ticket {
+  id Int [pk, increment]
+  created_at DateTime [default: `now()`, not null]
+  transaction_id String [not null]
+  reference_id String [not null]
+  user User [not null]
+  user_id Int [not null]
+  seat Seat [not null]
+  seat_id Int [unique, not null]
+}
+
+Ref: Schedule.depature_station_id > Station.id
+
+Ref: Schedule.arrival_station_id > Station.id
+
+Ref: Seat.classification_id > Classification.id
+
+Ref: Seat.schedule_id > Schedule.id
+
+Ref: Ticket.user_id > User.id
+
+Ref: Ticket.seat_id - Seat.id
