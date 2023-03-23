@@ -1,3 +1,4 @@
+import { comparePasswords, hashPassword } from "../modules/auth";
 import prisma from "../modules/db";
 
 export const getProfile = async (req, res) => {
@@ -35,12 +36,29 @@ export const updateProfile = async (req, res) => {
 
 export const changePassword = async (req, res) => {
   try {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: req.user.id,
+      },
+    });
+
+    const isValid = await comparePasswords(
+      req.body.old_password,
+      user.password
+    );
+
+    if (!isValid) {
+      res.status(401);
+      res.json({ message: "Old password incorrect" });
+      return;
+    }
+
     const response = await prisma.user.update({
       where: {
         id: req.body.id,
       },
       data: {
-        password: req.body.password,
+        password: await hashPassword(req.body.password),
       },
     });
     console.log(response);
