@@ -34,7 +34,7 @@ export const updateStation = async (req, res) => {
   try {
     const response = await prisma.station.update({
       where: {
-        id: req.body.id,
+        id: req.params.id,
       },
       data: {
         name: req.body.name,
