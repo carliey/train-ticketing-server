@@ -1,15 +1,31 @@
+import { exclude } from "../helpers/exclude";
 import { comparePasswords, hashPassword } from "../modules/auth";
 import prisma from "../modules/db";
+
+export const getUsers = async (req, res) => {
+  try {
+    const response = await prisma.user.findMany();
+    console.log(response);
+    res.json({ data: response, message: "users fetched successfully" });
+  } catch (error) {
+    console.log(error);
+    res.json({ error });
+  }
+};
 
 export const getProfile = async (req, res) => {
   try {
     const response = await prisma.user.findUnique({
       where: {
-        id: req.body.id,
+        id: req.user.id,
       },
     });
+    const userWithoutPassword = exclude(response, ["password"]);
     console.log(response);
-    res.json({ data: response, message: "profile fetched successfully" });
+    res.json({
+      data: userWithoutPassword,
+      message: "profile fetched successfully",
+    });
   } catch (error) {
     console.log(error);
     res.json({ error });
@@ -20,14 +36,14 @@ export const updateProfile = async (req, res) => {
   try {
     const response = await prisma.user.update({
       where: {
-        id: req.body.id,
+        id: req.user.id,
       },
       data: {
         name: req.body.name,
       },
     });
     console.log(response);
-    res.json({ data: response, message: "Profile updated successfully" });
+    res.json({ message: "Profile updated successfully" });
   } catch (error) {
     console.log(error);
     res.json({ error });
@@ -55,14 +71,14 @@ export const changePassword = async (req, res) => {
 
     const response = await prisma.user.update({
       where: {
-        id: req.body.id,
+        id: user.id,
       },
       data: {
-        password: await hashPassword(req.body.password),
+        password: await hashPassword(req.body.new_password),
       },
     });
     console.log(response);
-    res.json({ data: response, message: "password changed successfully" });
+    res.json({ message: "password changed successfully" });
   } catch (error) {
     console.log(error);
     res.json({ error });
