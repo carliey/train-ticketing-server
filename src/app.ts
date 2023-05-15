@@ -17,13 +17,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
-  res.json({ message: "I'm working" });
+  res.json({ message: "hello, api is live" });
 });
 
-app.use("/api", protection, router);
-app.post("/user/create", createUser);
-
+app.post("/signup", createUser);
 app.post("/signin", signin);
+
+app.use("/api", protection, router); //all endpoints inside router are protected
 
 app.listen(port, () => {
   console.log(`app listening on port ${port}`);
