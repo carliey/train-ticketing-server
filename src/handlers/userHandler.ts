@@ -40,6 +40,9 @@ export const updateProfile = async (req, res) => {
       },
       data: {
         name: req.body.name,
+        gender: req.body.gender,
+        phone: req.body.phone,
+        image: req.body.image,
       },
     });
     console.log(response);

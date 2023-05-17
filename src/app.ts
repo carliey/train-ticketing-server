@@ -5,11 +5,12 @@ import cors from "cors";
 import * as dotenv from "dotenv";
 import { protection } from "./modules/auth";
 import { createUser, signin } from "./handlers/authHandler";
+import config from "./config";
 
 dotenv.config();
 
 const app = express();
-const port = 5051;
+const port = config.port;
 
 app.use(cors());
 app.use(morgan("dev"));

@@ -7,6 +7,9 @@ Table User {
   created_at DateTime [default: `now()`, not null]
   email String [unique, not null]
   name String [not null]
+  gender String
+  phone String
+  image String
   password String [not null]
   tickets Ticket [not null]
 }
