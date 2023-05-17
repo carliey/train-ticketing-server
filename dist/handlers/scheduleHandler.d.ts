@@ -1,0 +1,10 @@
+export declare const getAllSchedules: (req: any, res: any) => Promise<void>;
+export declare const getAvailableSchedules: (req: any, res: any) => Promise<void>;
+export declare const getSchedulesByDate: (req: any, res: any) => Promise<void>;
+export declare const createSchedule: (req: any, res: any) => Promise<void>;
+export declare const updateSchedule: (req: any, res: any) => Promise<void>;
+export declare const activateSchedule: (req: any, res: any) => Promise<void>;
+export declare const deactivateSchedule: (req: any, res: any) => Promise<void>;
+export declare const addSeatToSchedule: (req: any, res: any) => Promise<void>;
+export declare const removeSeatFromSchedule: (req: any, res: any) => Promise<void>;
+export declare const deleteSchedule: (req: any, res: any) => Promise<void>;
