@@ -15,10 +15,12 @@ export const getSeats = async (req, res) => {
 };
 
 export const getScheduleSeats = async (req, res) => {
+  console.log("params", req.query.schedule_id);
   try {
     const response = await prisma.seat.findMany({
       where: {
-        schedule_id: req.params.id,
+        schedule_id: parseInt(req.query.schedule_id),
+        is_booked: false,
       },
       include: {
         classification: true,
@@ -39,11 +41,11 @@ export const createSeat = async (req, res) => {
   try {
     const response = await prisma.seat.create({
       data: {
-        name: req.params.name,
-        price: req.params.price,
+        name: req.body.name,
+        price: req.body.price,
         is_booked: false,
-        schedule_id: req.params.schedule_id,
-        classification_id: req.params.classification_id,
+        schedule_id: req.body.schedule_id,
+        classification_id: req.body.classification_id,
       },
     });
     console.log(response);
@@ -61,14 +63,14 @@ export const updateSeat = async (req, res) => {
   try {
     const response = await prisma.seat.update({
       where: {
-        id: req.params.id,
+        id: parseInt(req.query.id),
       },
       data: {
-        name: req.params.name,
-        price: req.params.price,
+        name: req.body.name,
+        price: req.body.price,
         is_booked: false,
-        schedule_id: req.params.schedule_id,
-        classification_id: req.params.classification_id,
+        schedule_id: req.body.schedule_id,
+        classification_id: req.body.classification_id,
       },
     });
     console.log(response);

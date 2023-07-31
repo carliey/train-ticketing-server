@@ -46,6 +46,7 @@ export const updateStation = async (req, res) => {
     res.json({ error });
   }
 };
+
 export const deleteStation = async (req, res) => {
   try {
     const response = await prisma.station.delete({

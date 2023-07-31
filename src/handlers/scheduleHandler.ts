@@ -36,7 +36,7 @@ export const getSchedulesByDate = async (req, res) => {
   try {
     const response = await prisma.schedule.findMany({
       where: {
-        departure_date: req.body.departure_date,
+        departure_date: req.query.departure_date,
       },
     });
     console.log(response);
@@ -52,9 +52,10 @@ export const getSchedulesByDate = async (req, res) => {
 
 export const createSchedule = async (req, res) => {
   try {
+    console.log(req.body);
     const response = await prisma.schedule.create({
       data: {
-        departure_date: req.body,
+        departure_date: req.body.departure_date,
         arrival_date: req.body.arrival_date || undefined,
         depature_time: req.body.depature_time,
         arrival_time: req.body.arrival_time,
@@ -78,7 +79,7 @@ export const updateSchedule = async (req, res) => {
   try {
     const response = await prisma.schedule.update({
       where: {
-        id: req.params.id,
+        id: req.query.id,
       },
       data: {
         departure_date: req.body,
@@ -105,7 +106,7 @@ export const activateSchedule = async (req, res) => {
   try {
     const response = await prisma.schedule.update({
       where: {
-        id: req.params.id,
+        id: req.query.id,
       },
       data: {
         is_open: true,
@@ -126,7 +127,7 @@ export const deactivateSchedule = async (req, res) => {
   try {
     const response = await prisma.schedule.update({
       where: {
-        id: req.params.id,
+        id: req.query.id,
       },
       data: {
         is_open: false,
@@ -144,10 +145,11 @@ export const deactivateSchedule = async (req, res) => {
 };
 
 export const addSeatToSchedule = async (req, res) => {
+  console.log("query", req.query.schedule_id);
   try {
     const response = await prisma.schedule.update({
       where: {
-        id: req.params.id,
+        id: req.query.schedule_id,
       },
       data: {
         seats: {
@@ -172,7 +174,7 @@ export const removeSeatFromSchedule = async (req, res) => {
   try {
     const response = await prisma.schedule.update({
       where: {
-        id: req.params.id,
+        id: req.query.id,
       },
       data: {
         seats: {
@@ -197,7 +199,7 @@ export const deleteSchedule = async (req, res) => {
   try {
     const response = await prisma.schedule.delete({
       where: {
-        id: req.params.id,
+        id: req.query.id,
       },
     });
     console.log(response);

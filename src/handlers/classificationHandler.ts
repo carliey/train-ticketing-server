@@ -50,6 +50,7 @@ export const updateClassification = async (req, res) => {
     res.json({ error });
   }
 };
+
 export const deleteClassification = async (req, res) => {
   try {
     const response = await prisma.classification.delete({
