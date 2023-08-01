@@ -38,8 +38,11 @@ export const getSchedulesByDate = async (req, res) => {
       where: {
         departure_date: req.query.departure_date,
       },
+      include: {
+        arrival_station: true,
+        depature_station: true,
+      },
     });
-    console.log(response);
     res.json({
       data: response,
       message: "schedules fetched successfully",

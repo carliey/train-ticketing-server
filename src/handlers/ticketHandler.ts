@@ -23,7 +23,7 @@ export const getUserTickets = async (req, res) => {
   try {
     const response = await prisma.ticket.findMany({
       where: {
-        id: req.user.id,
+        user_id: req.user.id,
       },
       include: {
         user: true,
